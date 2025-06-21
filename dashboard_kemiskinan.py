@@ -54,11 +54,12 @@ option = st.sidebar.selectbox(
 color_theme = st.sidebar.selectbox(
     "🎨 Pilih Skema Warna Visualisasi:",
     valid_colorbrewer_schemes,
-    index=valid_colorbrewer_schemes.index('YlOrRd')  # default selection
+    index=valid_colorbrewer_schemes.index('YlOrRd')
 )
 
-# 🌍 Folium Map
-st.subheader("🗺️ Peta Interaktif")
+# ========================== SECTION: MAP ==============================
+st.subheader("🗺️ Peta Interaktif Prediksi Kemiskinan")
+
 m = folium.Map(location=[-6.9, 107.6], zoom_start=8)
 
 folium.Choropleth(
@@ -80,26 +81,7 @@ folium.GeoJson(
 
 folium_static(m, width=1000, height=600)
 
-# 📈 Plotly Chart
-st.subheader("📊 Visualisasi Distribusi")
-fig = px.bar(
-    gdf.sort_values(by=option, ascending=False),
-    x='KABUPATEN',
-    y=option,
-    color=option,
-    color_continuous_scale=color_theme,
-    title=f"Distribusi {option} per Kabupaten"
-)
-fig.update_layout(xaxis_tickangle=-45, height=500)
-st.plotly_chart(fig, use_container_width=True)
-
-# 📋 Data Table
-st.subheader("📋 Tabel Data")
-columns_to_show = ['KABUPATEN', 'Actual_2019', 'Predicted_2019', 'Abs_Error_2019',
-                   'Actual_2024', 'Predicted_2024', 'Abs_Error_2024']
-st.dataframe(gdf[columns_to_show].sort_values(by='KABUPATEN').reset_index(drop=True))
-
-# === Interpretasi Hasil ===
+# ======================= SECTION: INTERPRETASI ========================
 st.subheader("🧭 Interpretasi Hasil Prediksi")
 
 st.markdown("""
@@ -124,3 +106,25 @@ Model memprediksi persentase kemiskinan untuk 27 kabupaten/kota di Jawa Barat be
 
 > ⚠️ Catatan: Model ini bersifat eksploratif dan **tidak menggantikan data resmi**. Validasi dan penyempurnaan lebih lanjut disarankan sebelum digunakan untuk pengambilan keputusan formal.
 """)
+
+# ========================= SECTION: CHART =============================
+st.subheader("📊 Visualisasi Distribusi")
+
+fig = px.bar(
+    gdf.sort_values(by=option, ascending=False),
+    x='KABUPATEN',
+    y=option,
+    color=option,
+    color_continuous_scale=color_theme,
+    title=f"Distribusi {option} per Kabupaten"
+)
+fig.update_layout(xaxis_tickangle=-45, height=500)
+st.plotly_chart(fig, use_container_width=True)
+
+# ========================== SECTION: TABLE ============================
+st.subheader("📋 Tabel Data")
+
+columns_to_show = ['KABUPATEN', 'Actual_2019', 'Predicted_2019', 'Abs_Error_2019',
+                   'Actual_2024', 'Predicted_2024', 'Abs_Error_2024']
+
+st.dataframe(gdf[columns_to_show].sort_values(by='KABUPATEN').reset_index(drop=True))
