@@ -7,7 +7,7 @@ import plotly.express as px
 
 # === Konfigurasi halaman Streamlit ===
 st.set_page_config(layout="wide")
-st.title("📍 Dashboard Prediksi Kemiskinan Jawa Barat")
+st.title("📍 _City Lights, Shadows of Poverty_: Analisis Prediksi Spasial Kemiskinan Berbasis _Night-Time Satellite Data_ dan _Deep Learning_ di Provinsi Jawa Barat")
 
 # === File paths (relatif terhadap repo/folder deployment) ===
 csv_path = 'DATA_ANALISIS_PREDIKSI.csv'
@@ -58,7 +58,7 @@ color_theme = st.sidebar.selectbox(
 )
 
 # === PETA + GAMBARA UMUM ===
-st.subheader("🗺️ Peta Interaktif & 📌 Gambaran Umum")
+st.subheader("🗺️ Peta Interaktif")
 col1, col2 = st.columns([2, 1])
 
 with col1:
@@ -93,7 +93,7 @@ with col2:
     - Warna gelap = tingkat kemiskinan tinggi.
     - Gunakan sidebar untuk memilih **tahun & tema warna**.
 
-    🔍 **Tujuan:** bantu analisis spasial kemiskinan untuk mendukung pengambilan kebijakan.
+    🔍 **Tujuan:** analisis spasial kemiskinan dengan memanfaatkan **citra malam hari (NTL)**.
     """)
 
 # === PLOTLY BAR CHART ===
@@ -125,7 +125,7 @@ st.markdown("""
 ### 🔍 Temuan Penting
 - Akurasi tinggi: **Cianjur, Sumedang, Bogor**.
 - Overestimate: **Kota Tasikmalaya, Kab. Bandung**.
-- Prediksi di **wilayah kota** cenderung lebih variatif.
+- Prediksi di **wilayah perkotaan** cenderung lebih variatif.
 
 ### 📌 Rekomendasi Kebijakan
 - Model bisa digunakan untuk **monitoring cepat** daerah rawan kemiskinan.
