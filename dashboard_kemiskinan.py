@@ -57,37 +57,49 @@ color_theme = st.sidebar.selectbox(
     index=valid_colorbrewer_schemes.index('YlOrRd')
 )
 
-# ========================== SECTION: MAP ==============================
-st.subheader("🗺️ Peta Interaktif Prediksi Kemiskinan")
+# ========================== SECTION: MAP + SUMMARY ==============================
+st.subheader("🗺️ Peta Interaktif & 📌 Gambaran Umum")
 
-m = folium.Map(location=[-6.9, 107.6], zoom_start=8)
+col1, col2 = st.columns([2, 1])  # Kolom kiri (peta) lebih lebar
 
-folium.Choropleth(
-    geo_data=gdf,
-    data=gdf,
-    columns=['KABUPATEN', option],
-    key_on='feature.properties.KABUPATEN',
-    fill_color=color_theme,
-    fill_opacity=0.7,
-    line_opacity=0.2,
-    legend_name=option
-).add_to(m)
+with col1:
+    m = folium.Map(location=[-6.9, 107.6], zoom_start=8)
 
-folium.GeoJson(
-    gdf,
-    name="Labels",
-    tooltip=folium.GeoJsonTooltip(fields=['KABUPATEN'], aliases=["Kabupaten:"])
-).add_to(m)
+    folium.Choropleth(
+        geo_data=gdf,
+        data=gdf,
+        columns=['KABUPATEN', option],
+        key_on='feature.properties.KABUPATEN',
+        fill_color=color_theme,
+        fill_opacity=0.7,
+        line_opacity=0.2,
+        legend_name=option
+    ).add_to(m)
 
-folium_static(m, width=1000, height=600)
+    folium.GeoJson(
+        gdf,
+        name="Labels",
+        tooltip=folium.GeoJsonTooltip(fields=['KABUPATEN'], aliases=["Kabupaten:"])
+    ).add_to(m)
+
+    folium_static(m, width=900, height=600)
+
+with col2:
+    st.markdown("""
+    ### 📌 Gambaran Umum
+    Dashboard ini menampilkan **prediksi dan data aktual** tingkat kemiskinan di 27 kabupaten/kota di **Jawa Barat** untuk tahun **2019** dan **2024**.
+
+    - Model menggunakan data citra malam hari (NTL) dan sosial ekonomi.
+    - Peta menunjukkan distribusi spasial nilai kemiskinan aktual dan prediksi.
+    - Warna semakin gelap menunjukkan tingkat kemiskinan yang lebih tinggi.
+
+    💡 Gunakan sidebar untuk memilih **tahun & skema warna**.
+    """)
 
 # ======================= SECTION: INTERPRETASI ========================
 st.subheader("🧭 Interpretasi Hasil Prediksi")
 
 st.markdown("""
-### 📌 Gambaran Umum
-Model memprediksi persentase kemiskinan untuk 27 kabupaten/kota di Jawa Barat berdasarkan citra malam hari (NTL) dan data sosial ekonomi untuk tahun **2019** dan **2024**.
-
 ### ✅ Kinerja Model
 - Rata-rata error absolut antara hasil prediksi dan data aktual berada di kisaran **1–3%**.
 - Model menunjukkan kinerja **konsisten** antar tahun, namun terdapat variasi antar wilayah.
