@@ -81,41 +81,31 @@ folium.GeoJson(
 
 folium_static(m, width=1000, height=600)
 
-# ======================= SECTION: INTERPRETASI & VISUAL ========================
+# ======================= SECTION: INTERPRETASI ========================
 st.subheader("🧭 Interpretasi Hasil Prediksi")
 
-col1, col2 = st.columns([2, 1])  # Lebar kolom kiri 2x lebih besar dari kanan
+st.markdown("""
+### 📌 Gambaran Umum
+Model memprediksi persentase kemiskinan untuk 27 kabupaten/kota di Jawa Barat berdasarkan citra malam hari (NTL) dan data sosial ekonomi untuk tahun **2019** dan **2024**.
 
-with col1:
-    st.markdown("""
-    ### 📌 Gambaran Umum
-    Model memprediksi persentase kemiskinan untuk 27 kabupaten/kota di Jawa Barat berdasarkan citra malam hari (NTL) dan data sosial ekonomi untuk tahun **2019** dan **2024**.
+### ✅ Kinerja Model
+- Rata-rata error absolut antara hasil prediksi dan data aktual berada di kisaran **1–3%**.
+- Model menunjukkan kinerja **konsisten** antar tahun, namun terdapat variasi antar wilayah.
 
-    ### ✅ Kinerja Model
-    - Rata-rata error absolut antara hasil prediksi dan data aktual berada di kisaran **1–3%**.
-    - Model menunjukkan kinerja **konsisten** antar tahun, namun terdapat variasi antar wilayah.
+### 🔍 Temuan Penting
+- **Akurasi tinggi** terlihat di wilayah seperti **Cianjur**, **Sumedang**, dan **Bogor**.
+- Sebaliknya, wilayah seperti **Kota Tasikmalaya** dan **Kab. Bandung** menunjukkan **selisih cukup besar**, mengindikasikan perlunya penyempurnaan model di wilayah tersebut.
 
-    ### 🔍 Temuan Penting
-    - **Akurasi tinggi** terlihat di wilayah seperti **Cianjur**, **Sumedang**, dan **Bogor**.
-    - Sebaliknya, wilayah seperti **Kota Tasikmalaya** dan **Kab. Bandung** menunjukkan **selisih cukup besar**.
+### 📈 Pola Regional
+- Wilayah **perkotaan** seperti **Kota Depok** dan **Bekasi** cenderung **overestimate**.
+- **Wilayah pedesaan** menunjukkan hasil prediksi yang lebih stabil dan dekat nilai aktual.
 
-    > ⚠️ Model bersifat eksploratif dan **tidak menggantikan data resmi**. Validasi lanjutan disarankan.
-    """)
+### 💡 Implikasi Kebijakan
+- Model dapat digunakan untuk **monitoring cepat** daerah rawan kemiskinan bahkan sebelum data resmi tersedia.
+- Membantu pemerintah dalam **menentukan prioritas intervensi** berbasis data prediktif.
 
-with col2:
-    # Visualisasi ringkasan (contoh: 5 kabupaten dengan error tertinggi)
-    top_error = gdf[['KABUPATEN', 'Abs_Error_2024']].sort_values(by='Abs_Error_2024', ascending=False).head(5)
-    fig_summary = px.bar(
-        top_error,
-        x='Abs_Error_2024',
-        y='KABUPATEN',
-        orientation='h',
-        title="📉 Top 5 Error Prediksi (2024)",
-        color='Abs_Error_2024',
-        color_continuous_scale='OrRd'
-    )
-    fig_summary.update_layout(height=400, margin=dict(l=10, r=10, t=40, b=10))
-    st.plotly_chart(fig_summary, use_container_width=True)
+> ⚠️ Catatan: Model ini bersifat eksploratif dan **tidak menggantikan data resmi**. Validasi dan penyempurnaan lebih lanjut disarankan sebelum digunakan untuk pengambilan keputusan formal.
+""")
 
 # ========================= SECTION: CHART =============================
 st.subheader("📊 Visualisasi Distribusi")
@@ -132,7 +122,7 @@ fig.update_layout(xaxis_tickangle=-45, height=500)
 st.plotly_chart(fig, use_container_width=True)
 
 # ========================== SECTION: TABLE ============================
-st.subheader("📋 Tabel Data")
+st.subheader("📋 Tabel Data Lengkap")
 
 columns_to_show = ['KABUPATEN', 'Actual_2019', 'Predicted_2019', 'Abs_Error_2019',
                    'Actual_2024', 'Predicted_2024', 'Abs_Error_2024']
