@@ -8,14 +8,25 @@ import plotly.express as px
 csv_path = 'DATA_ANALISIS_PREDIKSI.csv'
 shapefile_path = 'ADMIN_JAWABARAT_FIX.zip'
 
-@st.cache_data
 def load_data(shapefile_path, csv_path):
-    df = pd.read_csv(csv_path)
-    gdf = gpd.read_file(shapefile_path).to_crs("EPSG:4326")
-    gdf = gdf.simplify(0.001)
-    if 'KABUPATEN' in df.columns and 'KABUPATEN' in gdf.columns:
+    try:
+        df = pd.read_csv(csv_path)
+        gdf = gpd.read_file(shapefile_path).to_crs("EPSG:4326")
+        gdf = gdf.simplify(0.001)
+        
+        # Check for 'KABUPATEN' before merging
+        if 'KABUPATEN' not in df.columns:
+            st.error("❗ Kolom 'KABUPATEN' tidak ditemukan di CSV.")
+            return None, None
+        if 'KABUPATEN' not in gdf.columns:
+            st.error("❗ Kolom 'KABUPATEN' tidak ditemukan di Shapefile.")
+            return None, None
+        
         gdf = gdf.merge(df, on='KABUPATEN', how='left')
-    return df, gdf
+        return df, gdf
+    except Exception as e:
+        st.error(f"🚨 Gagal memuat data: {e}")
+        return None, None
 
 df, gdf = load_data(shapefile_path, csv_path)
 
