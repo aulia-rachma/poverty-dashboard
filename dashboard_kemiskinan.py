@@ -104,7 +104,7 @@ Model memprediksi persentase kemiskinan untuk 27 kabupaten/kota di Jawa Barat be
 - Model dapat digunakan untuk **monitoring cepat** daerah rawan kemiskinan bahkan sebelum data resmi tersedia.
 - Membantu pemerintah dalam **menentukan prioritas intervensi** berbasis data prediktif.
 
-> ⚠️ Catatan: Model ini bersifat eksploratif dan **tidak menggantikan data resmi**. Validasi dan penyempurnaan lebih lanjut disarankan sebelum digunakan untuk pengambilan keputusan formal.
+> ⚠️ Catatan: Model ini bersifat eksploratif dan **tidak menggantikan data resmi**. Validasi dan penyempurnaan lebih lanjut disarankan sebelum digunakan untuk pengambilan keputusan kebijakan.
 """)
 
 # ========================= SECTION: CHART =============================
