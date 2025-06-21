@@ -18,9 +18,14 @@ import plotly.express as px
 csv_path = 'DATA_ANALISIS_PREDIKSI.csv'
 shapefile_path = 'ADMIN_JAWABARAT_FIX.zip'
 
-df = pd.read_csv(csv_path)
-gdf = gpd.read_file(shapefile_path).to_crs("EPSG:4326")
-gdf = gdf.merge(df, on='KABUPATEN', how='left')
+def load_data(shapefile_path, csv_path):
+    df = pd.read_csv(csv_path)
+    gdf = gpd.read_file(shapefile_path).to_crs("EPSG:4326")
+    gdf = gdf.simplify(0.001)
+    gdf = gdf.merge(df, on='KABUPATEN', how='left')
+    return df, gdf
+
+df, gdf = load_data(shapefile_path, csv_path)
 
 # Sidebar and title
 st.set_page_config(layout="wide")
@@ -31,11 +36,6 @@ option = st.sidebar.selectbox(
     "Pilih Data yang Ingin Ditampilkan di Peta:",
     ['Actual_2019', 'Predicted_2019', 'Actual_2024', 'Predicted_2024']
 )
-
-# Check column existence
-if option not in gdf.columns:
-    st.error(f"Kolom '{option}' tidak ditemukan dalam data. Cek nama kolom di CSV.")
-    st.stop()
 
 # Folium Map
 st.subheader("🗺️ Peta Interaktif")
