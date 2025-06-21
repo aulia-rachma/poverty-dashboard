@@ -88,12 +88,12 @@ with col2:
 
     Dashboard ini menampilkan **prediksi dan data aktual** tingkat kemiskinan di 27 kabupaten/kota di **Jawa Barat** untuk tahun **2019** dan **2024**.
 
-    - Data analisis menggunakan **citra malam hari (NTL)** dan indikator sosial ekonomi.
+    - Data menggunakan **citra malam hari (NTL)** dan indikator sosial ekonomi.
     - Peta menunjukkan distribusi spasial tingkat kemiskinan.
     - Warna gelap = tingkat kemiskinan tinggi.
     - Gunakan sidebar untuk memilih **tahun & tema warna**.
 
-    🔍 **Tujuan:** analisis spasial kemiskinan dengan memanfaatkan **citra malam hari (NTL)**.
+    🔍 **Tujuan:** bantu analisis spasial kemiskinan untuk mendukung pengambilan kebijakan.
     """)
 
 # === PLOTLY BAR CHART ===
