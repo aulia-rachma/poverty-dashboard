@@ -94,7 +94,7 @@ fig.update_layout(xaxis_tickangle=-45, height=500)
 st.plotly_chart(fig, use_container_width=True)
 
 # 📋 Data Table
-st.subheader("📋 Tabel Data Lengkap")
+st.subheader("📋 Tabel Data")
 columns_to_show = ['KABUPATEN', 'Actual_2019', 'Predicted_2019', 'Abs_Error_2019',
                    'Actual_2024', 'Predicted_2024', 'Abs_Error_2024']
 st.dataframe(gdf[columns_to_show].sort_values(by='KABUPATEN').reset_index(drop=True))
