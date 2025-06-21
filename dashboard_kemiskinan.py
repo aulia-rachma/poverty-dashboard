@@ -98,3 +98,29 @@ st.subheader("📋 Tabel Data")
 columns_to_show = ['KABUPATEN', 'Actual_2019', 'Predicted_2019', 'Abs_Error_2019',
                    'Actual_2024', 'Predicted_2024', 'Abs_Error_2024']
 st.dataframe(gdf[columns_to_show].sort_values(by='KABUPATEN').reset_index(drop=True))
+
+# === Interpretasi Hasil ===
+st.subheader("🧭 Interpretasi Hasil Prediksi")
+
+st.markdown("""
+### 📌 Gambaran Umum
+Model memprediksi persentase kemiskinan untuk 27 kabupaten/kota di Jawa Barat berdasarkan citra malam hari (NTL) dan data sosial ekonomi untuk tahun **2019** dan **2024**.
+
+### ✅ Kinerja Model
+- Rata-rata error absolut antara hasil prediksi dan data aktual berada di kisaran **1–3%**.
+- Model menunjukkan kinerja **konsisten** antar tahun, namun terdapat variasi antar wilayah.
+
+### 🔍 Temuan Penting
+- **Akurasi tinggi** terlihat di wilayah seperti **Cianjur**, **Sumedang**, dan **Bogor**.
+- Sebaliknya, wilayah seperti **Kota Tasikmalaya** dan **Kab. Bandung** menunjukkan **selisih cukup besar**, mengindikasikan perlunya penyempurnaan model di wilayah tersebut.
+
+### 📈 Pola Regional
+- Wilayah **perkotaan** seperti **Kota Depok** dan **Bekasi** cenderung **overestimate**.
+- **Wilayah pedesaan** menunjukkan hasil prediksi yang lebih stabil dan dekat nilai aktual.
+
+### 💡 Implikasi Kebijakan
+- Model dapat digunakan untuk **monitoring cepat** daerah rawan kemiskinan bahkan sebelum data resmi tersedia.
+- Membantu pemerintah dalam **menentukan prioritas intervensi** berbasis data prediktif.
+
+> ⚠️ Catatan: Model ini bersifat eksploratif dan **tidak menggantikan data resmi**. Validasi dan penyempurnaan lebih lanjut disarankan sebelum digunakan untuk pengambilan keputusan formal.
+""")
