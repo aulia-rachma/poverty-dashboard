@@ -15,8 +15,8 @@ from streamlit_folium import folium_static
 import plotly.express as px
 
 # Load data from GitHub repo folder (relative path)
-shapefile_path = 'data/ADMIN_JAWABARAT_FIX.zip'
-csv_path = 'data/DATA_ANALISIS_PREDIKSI.csv'
+csv_path = 'DATA_ANALISIS_PREDIKSI.csv'
+shapefile_path = 'ADMIN_JAWABARAT_FIX.zip'
 
 df = pd.read_csv(csv_path)
 gdf = gpd.read_file(shapefile_path).to_crs("EPSG:4326")
