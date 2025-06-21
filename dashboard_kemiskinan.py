@@ -29,7 +29,7 @@ st.title("📍 Dashboard Prediksi Kemiskinan Jawa Barat")
 # Sidebar select
 option = st.sidebar.selectbox(
     "Pilih Data yang Ingin Ditampilkan di Peta:",
-    ['PERSENTASE_MISKIN_2019', 'Predicted_2019', 'PERSENTASE_MISKIN_2024', 'Predicted_2024']
+    ['Actual_2019', 'Predicted_2019', 'Actual_2024', 'Predicted_2024']
 )
 
 # Folium Map
