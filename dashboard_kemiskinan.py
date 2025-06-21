@@ -5,15 +5,15 @@ import folium
 from streamlit_folium import folium_static
 import plotly.express as px
 
-# Set Streamlit page config
+# === Konfigurasi halaman Streamlit ===
 st.set_page_config(layout="wide")
 st.title("📍 Dashboard Prediksi Kemiskinan Jawa Barat")
 
-# File paths
+# === File paths (relatif terhadap repo/folder deployment) ===
 csv_path = 'DATA_ANALISIS_PREDIKSI.csv'
 shapefile_path = 'ADMIN_JAWABARAT_FIX.zip'
 
-# Valid color schemes for Folium (ColorBrewer-compatible)
+# === Skema warna Folium valid ===
 valid_colorbrewer_schemes = [
     'YlGn', 'YlGnBu', 'GnBu', 'BuGn', 'PuBuGn', 'PuBu',
     'BuPu', 'RdPu', 'PuRd', 'OrRd', 'YlOrRd', 'YlOrBr',
@@ -22,7 +22,7 @@ valid_colorbrewer_schemes = [
     'RdGy', 'RdYlBu', 'Spectral', 'RdYlGn'
 ]
 
-# Load and cache data
+# === Load data dengan cache ===
 @st.cache_data
 def load_data(shapefile_path, csv_path):
     try:
@@ -31,7 +31,7 @@ def load_data(shapefile_path, csv_path):
         gdf["geometry"] = gdf["geometry"].simplify(0.001)
 
         if 'KABUPATEN' not in df.columns or 'KABUPATEN' not in gdf.columns:
-            st.error("❗ Kolom 'KABUPATEN' tidak ditemukan di salah satu file.")
+            st.error("❗ Kolom 'KABUPATEN' tidak ditemukan di file.")
             return None, None
 
         gdf = gdf.merge(df, on='KABUPATEN', how='left')
@@ -40,12 +40,12 @@ def load_data(shapefile_path, csv_path):
         st.error(f"🚨 Gagal memuat data: {e}")
         return None, None
 
-# Load data
+# === Load Data ===
 df, gdf = load_data(shapefile_path, csv_path)
 if df is None or gdf is None:
     st.stop()
 
-# Sidebar selectors
+# === Sidebar pilihan ===
 option = st.sidebar.selectbox(
     "📊 Pilih Data yang Ingin Ditampilkan:",
     ['Actual_2019', 'Predicted_2019', 'Actual_2024', 'Predicted_2024']
@@ -57,14 +57,12 @@ color_theme = st.sidebar.selectbox(
     index=valid_colorbrewer_schemes.index('YlOrRd')
 )
 
-# ========================== SECTION: MAP + SUMMARY ==============================
+# === PETA + GAMBARA UMUM ===
 st.subheader("🗺️ Peta Interaktif & 📌 Gambaran Umum")
-
-col1, col2 = st.columns([2, 1])  # Kolom kiri (peta) lebih lebar
+col1, col2 = st.columns([2, 1])
 
 with col1:
     m = folium.Map(location=[-6.9, 107.6], zoom_start=8)
-
     folium.Choropleth(
         geo_data=gdf,
         data=gdf,
@@ -82,46 +80,24 @@ with col1:
         tooltip=folium.GeoJsonTooltip(fields=['KABUPATEN'], aliases=["Kabupaten:"])
     ).add_to(m)
 
-    folium_static(m, width=900, height=600)
+    folium_static(m, width=850, height=550)
 
 with col2:
     st.markdown("""
     ### 📌 Gambaran Umum
+
     Dashboard ini menampilkan **prediksi dan data aktual** tingkat kemiskinan di 27 kabupaten/kota di **Jawa Barat** untuk tahun **2019** dan **2024**.
 
-    - Model menggunakan data citra malam hari (NTL) dan sosial ekonomi.
-    - Peta menunjukkan distribusi spasial nilai kemiskinan aktual dan prediksi.
-    - Warna semakin gelap menunjukkan tingkat kemiskinan yang lebih tinggi.
+    - Data analisis menggunakan **citra malam hari (NTL)** dan indikator sosial ekonomi.
+    - Peta menunjukkan distribusi spasial tingkat kemiskinan.
+    - Warna gelap = tingkat kemiskinan tinggi.
+    - Gunakan sidebar untuk memilih **tahun & tema warna**.
 
-    💡 Gunakan sidebar untuk memilih **tahun & skema warna**.
+    🔍 **Tujuan:** analisis spasial kemiskinan dengan memanfaatkan **citra malam hari (NTL)**.
     """)
 
-# ======================= SECTION: INTERPRETASI ========================
-st.subheader("🧭 Interpretasi Hasil Prediksi")
-
-st.markdown("""
-### ✅ Kinerja Model
-- Rata-rata error absolut antara hasil prediksi dan data aktual berada di kisaran **1–3%**.
-- Model menunjukkan kinerja **konsisten** antar tahun, namun terdapat variasi antar wilayah.
-
-### 🔍 Temuan Penting
-- **Akurasi tinggi** terlihat di wilayah seperti **Cianjur**, **Sumedang**, dan **Bogor**.
-- Sebaliknya, wilayah seperti **Kota Tasikmalaya** dan **Kab. Bandung** menunjukkan **selisih cukup besar**, mengindikasikan perlunya penyempurnaan model di wilayah tersebut.
-
-### 📈 Pola Regional
-- Wilayah **perkotaan** seperti **Kota Depok** dan **Bekasi** cenderung **overestimate**.
-- **Wilayah pedesaan** menunjukkan hasil prediksi yang lebih stabil dan dekat nilai aktual.
-
-### 💡 Implikasi Kebijakan
-- Model dapat digunakan untuk **monitoring cepat** daerah rawan kemiskinan bahkan sebelum data resmi tersedia.
-- Membantu pemerintah dalam **menentukan prioritas intervensi** berbasis data prediktif.
-
-> ⚠️ Catatan: Model ini bersifat eksploratif dan **tidak menggantikan data resmi**. Validasi dan penyempurnaan lebih lanjut disarankan sebelum digunakan untuk pengambilan keputusan formal.
-""")
-
-# ========================= SECTION: CHART =============================
+# === PLOTLY BAR CHART ===
 st.subheader("📊 Visualisasi Distribusi")
-
 fig = px.bar(
     gdf.sort_values(by=option, ascending=False),
     x='KABUPATEN',
@@ -133,10 +109,27 @@ fig = px.bar(
 fig.update_layout(xaxis_tickangle=-45, height=500)
 st.plotly_chart(fig, use_container_width=True)
 
-# ========================== SECTION: TABLE ============================
-st.subheader("📋 Tabel Data Lengkap")
-
+# === TABEL DATA ===
+st.subheader("📋 Tabel Data")
 columns_to_show = ['KABUPATEN', 'Actual_2019', 'Predicted_2019', 'Abs_Error_2019',
                    'Actual_2024', 'Predicted_2024', 'Abs_Error_2024']
-
 st.dataframe(gdf[columns_to_show].sort_values(by='KABUPATEN').reset_index(drop=True))
+
+# === INTERPRETASI (bawah dashboard) ===
+st.subheader("🧭 Interpretasi Hasil Prediksi")
+st.markdown("""
+### ✅ Kinerja Model
+- Rata-rata error absolut berada di kisaran **1–3%**.
+- Konsistensi prediksi baik antara tahun 2019 dan 2024.
+
+### 🔍 Temuan Penting
+- Akurasi tinggi: **Cianjur, Sumedang, Bogor**.
+- Overestimate: **Kota Tasikmalaya, Kab. Bandung**.
+- Prediksi di **wilayah kota** cenderung lebih variatif.
+
+### 📌 Rekomendasi Kebijakan
+- Model bisa digunakan untuk **monitoring cepat** daerah rawan kemiskinan.
+- Potensial untuk digunakan sebagai basis **perencanaan intervensi** data-driven.
+
+> ⚠️ Model ini masih bersifat eksploratif. Validasi lapangan tetap diperlukan.
+""")
