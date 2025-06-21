@@ -32,6 +32,11 @@ option = st.sidebar.selectbox(
     ['Actual_2019', 'Predicted_2019', 'Actual_2024', 'Predicted_2024']
 )
 
+# Check column existence
+if option not in gdf.columns:
+    st.error(f"Kolom '{option}' tidak ditemukan dalam data. Cek nama kolom di CSV.")
+    st.stop()
+
 # Folium Map
 st.subheader("🗺️ Peta Interaktif")
 m = folium.Map(location=[-6.9, 107.6], zoom_start=8)
