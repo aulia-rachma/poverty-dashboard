@@ -15,15 +15,14 @@ shapefile_path = 'ADMIN_JAWABARAT_FIX.zip'
 
 # Load and cache data
 @st.cache_data
+@st.cache_data
 def load_data(shapefile_path, csv_path):
     try:
         df = pd.read_csv(csv_path)
         gdf = gpd.read_file(shapefile_path).to_crs("EPSG:4326")
-        gdf = gdf.simplify(0.001)  # Simplify geometry for faster map rendering
 
-        # Debug: check column names
-        # st.write("CSV Columns:", df.columns.tolist())
-        # st.write("Shapefile Columns:", gdf.columns.tolist())
+        # ✅ HANYA menyederhanakan kolom geometry, bukan seluruh gdf
+        gdf["geometry"] = gdf["geometry"].simplify(0.001)
 
         if 'KABUPATEN' not in df.columns:
             st.error("❗ Kolom 'KABUPATEN' tidak ditemukan di CSV.")
