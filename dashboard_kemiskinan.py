@@ -71,6 +71,6 @@ st.plotly_chart(fig, use_container_width=True)
 
 # Tabel Data
 st.subheader("📋 Tabel Data Lengkap")
-columns_to_show = ['KABUPATEN', 'PERSENTASE_MISKIN_2019', 'Predicted_2019', 'Abs_Error_2019',
-                   'PERSENTASE_MISKIN_2024', 'Predicted_2024', 'Abs_Error_2024']
+columns_to_show = ['KABUPATEN', 'Actual_2019', 'Predicted_2019', 'Abs_Error_2019',
+                   'Actual_2024', 'Predicted_2024', 'Abs_Error_2024']
 st.dataframe(gdf[columns_to_show].sort_values(by='KABUPATEN').reset_index(drop=True))
