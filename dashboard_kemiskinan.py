@@ -132,4 +132,11 @@ st.markdown("""
 - Potensial untuk digunakan sebagai basis **perencanaan intervensi** data-driven.
 
 > ⚠️ Model ini masih bersifat eksploratif. Validasi lapangan tetap diperlukan.
+
+---
+
+### ⚠️ Keterbatasan Penelitian
+- **Data makro:** Analisis masih terbatas pada tingkat kabupaten/kota (n=27), belum menjangkau desa/kelurahan.
+- **Variabel terbatas:** Hanya mencakup indikator sosio-ekonomi, belum multidimensi.
+- **Metodologi:** Jumlah data kecil menyebabkan nilai R² menurun pada 2019 dan 2024.
 """)
