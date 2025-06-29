@@ -48,7 +48,7 @@ if df is None or gdf is None:
 # === Sidebar pilihan ===
 option = st.sidebar.selectbox(
     "📊 Pilih Data yang Ingin Ditampilkan:",
-    ['Actual_2019', 'Predicted_2019', 'Actual_2024', 'Predicted_2024']
+    ['%Kemiskinan_Actual_2019', '%Kemiskinan_Predicted_2019', '%Kemiskinan_Actual_2024', '%Kemiskinan_Predicted_2024']
 )
 
 color_theme = st.sidebar.selectbox(
